@@ -13,5 +13,10 @@ class AnalysisAgent:
                 f"Identify key themes, industries, sentiment, and potential opportunities.\n\n{summary}"
             )
         )
-        response = self.llm.invoke([message])
-        return response.content
+        try:
+            response = self.llm.invoke([message])
+            return response.content
+
+        except Exception as e:
+            print(f"[AnalysisAgent] Error during analysis: {e}")
+            return "AnalysisAgent encountered an error while analyzing the trends."

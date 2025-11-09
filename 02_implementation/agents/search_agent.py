@@ -14,26 +14,32 @@ class SearchAgent:
 
     def search_trends(self, query: str):
         print(f"[SearchAgent] Searching Tavily for: {query}")
-        response = self.search_tool.search(query)
-        results = response.get("results", [])
+        try:
+            response = self.search_tool.search(query)
+            results = response.get("results", [])
     
-        if not results:
-            print("[SearchAgent] No results found.")
-            return "No results found for this query."
+            if not results:
+                print("[SearchAgent] No results found.")
+                return "No results found for this query."
 
-        web_content = ""
-        for r in results:
-            title = r.get("title", "No title")
-            url = r.get("url", "No URL")
-            content = r.get("content", "")
+            web_content = ""
+            for r in results:
+                title = r.get("title", "No title")
+                url = r.get("url", "No URL")
+                content = r.get("content", "")
         
-            web_content += f"\n\nTitle: {title}\nURL: {url}\nSnippet: {content[:500]}"
+                web_content += f"\n\nTitle: {title}\nURL: {url}\nSnippet: {content[:500]}"
 
-        print("[WebAgent] Summarizing retrieved information...")
+            print("[WebAgent] Summarizing retrieved information...")
     
-        message = HumanMessage(
-            content=f"Summarize the following information:\n{web_content[:4000]}"
-        )   
+            message = HumanMessage(
+                content=f"Summarize the following information:\n{web_content[:4000]}"
+            )   
 
-        summary = self.llm.invoke([message])
-        return summary.content
+            summary = self.llm.invoke([message])
+            return summary.content
+            
+        except Exception as e:
+            print(f"[Error] Search failed: {e}")
+            return "Search temporarily unavailable."
+
