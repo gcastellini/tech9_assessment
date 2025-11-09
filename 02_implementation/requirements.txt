@@ -1,0 +1,12 @@
+# Core LangChain packages
+langchain
+langchain-core
+langchain-community
+langchain-ollama
+
+# Tavily search integration
+tavily-python
+
+
+python-dotenv
+
